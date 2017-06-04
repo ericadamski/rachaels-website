@@ -1,0 +1,41 @@
+.header {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    background: #A7A7B1;
+    width: 100vw;
+    padding: 0 25px;
+    height: 80px;
+    @media (min-width: 375px) {
+        height: 50px;
+        flex-direction: row;
+    }
+
+    .title {
+        h3 {
+            margin: 10px 0;
+            padding: 0;
+        }
+
+        justify-content: flex-start;
+    }
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    @media (min-width: 375px) {
+        flex-direction: row;
+    }
+
+    & a {
+        margin: 10px 5px;
+        text-transform: capitalize;
+    }
+}
