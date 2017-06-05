@@ -1,7 +1,7 @@
 import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import { Header, Hero, Rsvp, Container, Admin } from './components';
+import { Header, Hero, Rsvp, Container, Admin, Details } from './components';
 
 import styles from './main.scss';
 
@@ -22,6 +22,7 @@ export default class Main extends React.Component {
                 <Header openAdmin={this.openAdmin} />
                 <Container className={styles.page}>
                     <Hero />
+                    <Details />
                     <Rsvp />
                     <Admin open={this.state.openAdmin} close={this.openAdmin} />
                 </Container>
