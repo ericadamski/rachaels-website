@@ -13,8 +13,6 @@ render(
                 primary2Color: '#A5C2D0',
                 primary3Color: '#A5C2D0',
                 accent1Color: '#FBE35C',
-                // accent2Color: grey100,
-                // accent3Color: grey500,
                 textColor: '#595C68',
                 alternateTextColor: '#F9F9F9',
             },
