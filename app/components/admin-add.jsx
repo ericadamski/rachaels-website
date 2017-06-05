@@ -16,7 +16,7 @@ export default class Add extends React.Component {
         const email = this.email.getValue();
         const vegan = this.vegan.isChecked();
         const vegetarian = this.vegetarian.isChecked();
-        const lactos = this.lactos.isChecked();
+        const lactose = this.lactose.isChecked();
         const gluten = this.gluten.isChecked();
         const other = this.other.getValue();
 
@@ -31,8 +31,8 @@ export default class Add extends React.Component {
                 diet: {
                     vegan,
                     vegetarian,
-                    'lactos-free': lactos,
-                    'gluten-free': gluten,
+                    'lactose free': lactose,
+                    'gluten free': gluten,
                     other,
                 },
                 address: '',
@@ -43,7 +43,7 @@ export default class Add extends React.Component {
                 this.other.input.value = '';
                 this.vegan.setChecked(false);
                 this.vegetarian.setChecked(false);
-                this.lactos.setChecked(false);
+                this.lactose.setChecked(false);
                 this.gluten.setChecked(false);
             });
     }
@@ -63,7 +63,7 @@ export default class Add extends React.Component {
                 />
                 <Checkbox ref={n => (this.vegan = n)} label="Vegan" />
                 <Checkbox ref={n => (this.vegetarian = n)} label="Vegetarian" />
-                <Checkbox ref={n => (this.lactos = n)} label="Lactos Free" />
+                <Checkbox ref={n => (this.lactose = n)} label="Lactose Free" />
                 <Checkbox ref={n => (this.gluten = n)} label="Gluten Free" />
                 <Checkbox
                     onCheck={e => {
@@ -75,7 +75,7 @@ export default class Add extends React.Component {
                 <div className={!this.state.showOther ? 'hidden' : ''}>
                     <TextField
                         ref={n => (this.other = n)}
-                        floatingLabelText="Dietary Needs"
+                        floatingLabelText="Extra Dietary Needs"
                         multiLine
                     />
                 </div>

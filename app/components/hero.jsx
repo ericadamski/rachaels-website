@@ -7,7 +7,10 @@ export default () => {
         <div className={styles.hero}>
             <div className={styles.background} />
             <div className={styles.heroText}>
-                <h1>hello</h1>
+                <h1>
+                    Rachael Lawless and Mattie Doucette Pilles are getting
+                    married!
+                </h1>
             </div>
         </div>
     );
