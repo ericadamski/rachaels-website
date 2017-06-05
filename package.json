@@ -83,6 +83,10 @@
         "*.js": [
             "prettier --write --trailing-comma es5 --single-quote --tab-width 4",
             "git add"
+        ],
+        "*.jsx": [
+            "prettier --write --trailing-comma es5 --single-quote --tab-width 4",
+            "git add"
         ]
     }
 }
