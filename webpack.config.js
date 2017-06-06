@@ -8,7 +8,7 @@ let entryPaths = values(glob_entries('./lib/css/**/*.css'));
 entryPaths = entryPaths.concat([
     'babel-polyfill',
     './index.jsx',
-    './app/scss/base.scss',
+    // './app/scss/base.scss',
 ]);
 
 module.exports = {
