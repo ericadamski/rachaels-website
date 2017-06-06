@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import firebase from 'firebase';
 
-import styles from './admin-add.scss';
+// import styles from './admin-add.scss';
 
 export default class Add extends React.Component {
     state = { showOther: false };

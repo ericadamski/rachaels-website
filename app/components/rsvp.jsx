@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 
 import { head as first } from 'ramda';
 
-import styles from './rsvp.scss';
+// import styles from './rsvp.scss';
 
 import Container from './container.jsx';
 import Information from './correct-information.jsx';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './details.scss';
+// import styles from './details.scss';
 
 export default () => {
     return (

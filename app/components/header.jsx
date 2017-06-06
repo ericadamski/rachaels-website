@@ -10,7 +10,7 @@ import {
 
 import Container from './container.jsx';
 
-import styles from './header.scss';
+// import styles from './header.scss';
 
 export default ({ openAdmin }) => {
     return (

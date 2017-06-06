@@ -7,7 +7,7 @@ import firebase from 'firebase';
 
 import Add from './admin-add.jsx';
 
-import styles from '../main.scss';
+// import styles from '../main.scss';
 
 export default class Admin extends React.Component {
     static propTypes = { open: PropTypes.bool, close: PropTypes.func };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './hero.scss';
+// import styles from './hero.scss';
 
 export default () => {
     return (

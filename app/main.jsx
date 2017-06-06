@@ -3,7 +3,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { Header, Hero, Rsvp, Container, Admin, Details } from './components';
 
-import styles from './main.scss';
+// import styles from './main.scss';
 
 injectTapEventPlugin();
 
