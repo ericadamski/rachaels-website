@@ -24,24 +24,24 @@ module.exports = {
     },
     module: {
         loaders: [
-            {
-                test: /\.(css|scss)$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                modules: true,
-                                importLoader: 1,
-                                camelCase: true,
-                                localIdentName: '[local]',
-                            },
-                        },
-                        { loader: 'sass-loader' },
-                    ],
-                }),
-            },
+            // {
+            //     test: /\.(css|scss)$/,
+            //     use: ExtractTextPlugin.extract({
+            //         fallback: 'style-loader',
+            //         use: [
+            //             {
+            //                 loader: 'css-loader',
+            //                 options: {
+            //                     modules: true,
+            //                     importLoader: 1,
+            //                     camelCase: true,
+            //                     localIdentName: '[local]',
+            //                 },
+            //             },
+            //             { loader: 'sass-loader' },
+            //         ],
+            //     }),
+            // },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
