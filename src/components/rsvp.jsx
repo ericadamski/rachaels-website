@@ -24,7 +24,7 @@ const config = {
 firebase.initializeApp(config);
 
 export default class Rsvp extends React.Component {
-  state = { rsvped: false, attendee: null };
+  state = { rsvped: false, attendees: null };
 
   submit = this.submit.bind(this);
 
@@ -42,21 +42,21 @@ export default class Rsvp extends React.Component {
       .once('value')
       .then(snapshot => {
         const val = snapshot.val();
-        const attendee = {
+        const attendees = {
           id: first(Object.keys(val)),
           ...first(Object.values(val)),
         };
 
-        if (!attendee) {
+        if (!attendees) {
           this.setState({error: `Unable to find the email ${value} in our list 😔` });
-        } else if (attendee.rsvp) {
+        } else if (attendees.rsvp) {
           this.email.input.value = '';
           this.setState({
             rsvped: true,
-            continue: this.makeContinue(attendee),
+            continue: this.makeContinue(attendees),
           });
         } else {
-          this.setState({ attendee });
+          this.setState({ attendees });
         }
       })
       .catch(e => {
@@ -68,23 +68,23 @@ export default class Rsvp extends React.Component {
   close = this.close.bind(this);
 
   close() {
-    this.setState({ attendee: null, rsvped: false });
+    this.setState({ attendees: null, rsvped: false });
   }
 
-  makeContinue(attendee) {
+  makeContinue(attendees) {
     return () => {
-      this.setState({ attendee, rsvped: false });
+      this.setState({ attendees, rsvped: false });
     };
   }
 
   render() {
-    const { attendee, error } = this.state;
+    const { attendees, error } = this.state;
 
     return (
             <div id="rsvp" className="rsvp">
                 <h2>Let Us Know If You Can Attend!</h2>
                 <Container
-                    className={`rsvp__inner ${attendee
+                    className={`rsvp__inner ${attendees
                         ? 'hidden'
                         : ''}`}
                 >
@@ -104,7 +104,7 @@ export default class Rsvp extends React.Component {
                         RSVP
                     </RaisedButton>
                 </Container>
-                <Information attendee={attendee} close={this.close} />
+                <Information attendees={attendees} close={this.close} />
                 <Dialog
                     title="You've Already RSVP'ed"
                     actions={[

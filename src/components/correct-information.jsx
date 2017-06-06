@@ -8,92 +8,108 @@ import Checkbox from 'material-ui/Checkbox';
 import firebase from 'firebase';
 
 export default class Information extends React.Component {
-    static propTypes = {
-        close: PropTypes.func,
-        attendee: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            email: PropTypes.string.isRequired,
-            diet: PropTypes.shape({
-                vegetarian: PropTypes.bool.isRequired,
-                vegan: PropTypes.bool.isRequired,
-                'gluten free': PropTypes.bool.isRequired,
-                'lactose free': PropTypes.bool.isRequired,
-                other: PropTypes.string.isRequired,
-            }).isRequired,
-            address: PropTypes.string.isRequired,
-        }),
-    };
+  static propTypes = {
+    close: PropTypes.func,
+    attendees: PropTypes.shape({
+      members: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        attending: PropTypes.bool,
+        diet: PropTypes.shape({
+          vegetarian: PropTypes.bool.isRequired,
+          vegan: PropTypes.bool.isRequired,
+          'gluten free': PropTypes.bool.isRequired,
+          'lactose free': PropTypes.bool.isRequired,
+          other: PropTypes.string.isRequired,
+        }).isRequired,
+      })).isRequired,
+      email: PropTypes.string.isRequired,
+      address: PropTypes.string.isRequired,
+    }),
+  };
 
-    state = { attendee: null, showOther: false };
+  state = { attendees: null };
 
-    componentWillReceiveProps(props) {
-        let other = false;
+  componentWillReceiveProps(props) {
+    if (props.attendees) {
+      const others = props.attendees.members.reduce((acc, member) => {
+        acc[member.name] = member.diet.other !== '';
 
-        if (props.attendee && props.attendee.diet.other !== '') other = true;
+        return acc;
+      }, {});
 
-        this.setState({
-            attendee: props.attendee,
-            showOther: other,
-        });
+      this.setState({ attendees: props.attendees, ...others });
+
+      this.attendees = Object.assign([], props.attendees.members);
+    } else this.setState({ attendees: null });
+  }
+
+  rsvp = this.rsvp.bind(this);
+  rsvpMember = this.rsvpMember.bind(this);
+
+  update = this.update.bind(this);
+
+  rsvpMember(memberIndex) {
+    return (e, value) => {
+      this.setState(({ attendees }) => {
+        attendees.members[memberIndex].attending = value;
+
+        return { attendees };
+      });
     }
+  }
 
-    rsvp = this.rsvp.bind(this);
+  rsvp(e, value) {
+    this.setState(({ attendees }) => {
+      attendees.rsvp = value;
 
-    update = this.update.bind(this);
+      return { attendees };
+    });
+  }
 
-    rsvp(e, value) {
-        this.setState(({ attendee }) => {
-            attendee.rsvp = value;
+  update() {
+    const address = this.address.getValue();
 
-            return { attendee };
-        });
-    }
+    const members = this.state.attendees.members.map(member => ({
+      name: member.nameRef.getValue(),
+      diet: {
+        vegan: member.veganRef.isChecked(),
+        vegetarian: member.vegetarianRef.isChecked(),
+        'lactose free': member.lactoseRef.isChecked(),
+        'gluten free': member.glutenRef.isChecked(),
+        other: member.otherRef.getValue(),
+      },
+      attending: member.attending,
+    }));
 
-    update() {
-        const name = this.name.getValue();
-        const other = this.other.getValue();
-        const address = this.address.getValue();
+    firebase
+      .database()
+      .ref(`attendees/${this.state.attendees.id}`)
+      .update({
+        address,
+        members,
+        rsvp: this.state.attendees.rsvp,
+      })
+      .then(() => {
+        this.props.close();
+      });
+  }
 
-        const vegan = this.vegan.isChecked();
-        const vegetarian = this.vegetarian.isChecked();
-        const lactose = this.lactose.isChecked();
-        const gluten = this.gluten.isChecked();
+  render() {
+    const { attendees } = this.state;
 
-        firebase
-            .database()
-            .ref(`attendees/${this.state.attendee.id}`)
-            .update({
-                name,
-                address,
-                diet: {
-                    vegan,
-                    vegetarian,
-                    'lactose free': lactose,
-                    'gluten free': gluten,
-                    other,
-                },
-                rsvp: this.state.attendee.rsvp,
-            })
-            .then(() => {
-                this.props.close();
-            });
-    }
+    if (!attendees) return null;
 
-    render() {
-        const { attendee } = this.state;
-        const diet = (attendee || {}).diet;
+    const actions = [
+      <FlatButton primary label="Save" onClick={this.update} />,
+      <FlatButton label="Cancel" onClick={this.props.close} />,
+    ];
 
-        const actions = [
-            <FlatButton primary label="Save" onClick={this.update} />,
-            <FlatButton label="Cancel" onClick={this.props.close} />,
-        ];
-
-        return (
+    return (
             <Dialog
-                title="Details"
+                title={`${attendees.members.length > 1 ? 'Is anyone in your party able to make it?' : 'Are you able to make it?'}`}
                 actions={actions}
                 modal={false}
-                open={!!this.state.attendee}
+                open={!!attendees}
                 onRequestClose={this.props.close}
                 autoScrollBodyContent={true}
             >
@@ -101,82 +117,108 @@ export default class Information extends React.Component {
                     <RadioButtonGroup
                         name="rsvp"
                         onChange={this.rsvp}
-                        defaultSelected={(attendee || {}).rsvp || false}
+                        defaultSelected={(attendees || {}).rsvp || false}
                         style={{ width: '100%' }}
                     >
                         <RadioButton
-                            label="Coming"
-                            checkedIcon={<span>🎉</span>}
+                            label="Yes!"
+                            checkedIcon={<span role="img">🎉</span>}
                             value={true}
                         />
                         <RadioButton
-                            label="Not Coming"
-                            checkedIcon={<span>😭</span>}
+                            label="Unfortunately not."
+                            checkedIcon={<span role="img">😭</span>}
                             value={false}
                         />
                     </RadioButtonGroup>
                 </div>
-                <div className={!(attendee || {}).rsvp ? 'hidden' : ''}>
-                    <h2>Help us fill out some more details!</h2>
-                    <TextField
-                        fullWidth
-                        ref={n => (this.name = n)}
-                        floatingLabelText="Name"
-                        type="text"
-                        defaultValue={(attendee || {}).name}
-                    />
-                    <TextField
-                        fullWidth
-                        disabled
-                        ref={n => (this.email = n)}
-                        floatingLabelText="Email"
-                        type="email"
-                        value={(attendee || {}).email}
-                    />
-                    <TextField
-                        fullWidth
-                        ref={n => (this.address = n)}
-                        floatingLabelText="Mailing Address"
-                        type="text"
-                        defaultValue={(attendee || {}).address}
-                    />
-                    <Checkbox
-                        ref={n => (this.vegan = n)}
-                        label="Vegan"
-                        defaultChecked={(diet || {}).vegan}
-                    />
-                    <Checkbox
-                        ref={n => (this.vegetarian = n)}
-                        label="Vegetarian"
-                        defaultChecked={(diet || {}).vegetarian}
-                    />
-                    <Checkbox
-                        ref={n => (this.lactose = n)}
-                        label="Lactose Free"
-                        defaultChecked={(diet || {})['lactose free']}
-                    />
-                    <Checkbox
-                        ref={n => (this.gluten = n)}
-                        label="Gluten Free"
-                        defaultChecked={(diet || {})['gluten free']}
-                    />
-                    <Checkbox
-                        onCheck={e =>
-                            this.setState({ showOther: e.target.checked })}
-                        label="Other"
-                        defaultChecked={(diet || {}).other !== ''}
-                    />
-                    <div className={!this.state.showOther ? 'hidden' : ''}>
+                <div className={!(attendees || {}).rsvp ? 'hidden' : ''}>
+                  <h2>We just need a little more information.</h2>
+                  <TextField
+                      fullWidth
+                      disabled
+                      ref={n => this.email = n}
+                      floatingLabelText="Email"
+                      type="email"
+                      value={attendees.email}
+                  />
+                  <TextField
+                      fullWidth
+                      ref={n => this.address = n}
+                      floatingLabelText="Mailing Address"
+                      type="text"
+                      defaultValue={attendees.address}
+                  />
+                  { attendees.members.map((attendee, i) => {
+                    return  <div key={`${attendee.name}-${i}`}>
+                        <h2>Will {attendee.name} be attending?</h2>
+                        <RadioButtonGroup
+                            name="rsvp"
+                            onChange={this.rsvpMember(i)}
+                            defaultSelected={attendee.attending}
+                            style={{ width: '100%' }}
+                        >
+                            <RadioButton
+                                label="Yes!"
+                                checkedIcon={<span role="img">🎉</span>}
+                                value={true}
+                            />
+                            <RadioButton
+                                label="Unfortunately not."
+                                checkedIcon={<span role="img">😭</span>}
+                                value={false}
+                            />
+                        </RadioButtonGroup>
+                        <div className={!attendee.attending ? 'hidden' : ''}>
+                        <h3>Help us fill out some more details about {attendee.name}!</h3>
                         <TextField
                             fullWidth
-                            ref={n => (this.other = n)}
-                            floatingLabelText="Extra Dietary Needs"
-                            multiLine
-                            defaultValue={(diet || {}).other}
+                            ref={n => this.attendees[i].nameRef = n}
+                            floatingLabelText="Name"
+                            type="text"
+                            defaultValue={attendee.name}
                         />
-                    </div>
-                </div>
+                        <Checkbox
+                            ref={n => this.attendees[i].veganRef = n}
+                            label="Vegan"
+                            defaultChecked={attendee.diet.vegan}
+                        />
+                        <Checkbox
+                            ref={n => this.attendees[i].vegetarianRef = n}
+                            label="Vegetarian"
+                            defaultChecked={attendee.diet.vegetarian}
+                        />
+                        <Checkbox
+                            ref={n => this.attendees[i].lactoseRef = n}
+                            label="Lactose Free"
+                            defaultChecked={attendee.diet['lactose free']}
+                        />
+                        <Checkbox
+                            ref={n => this.attendees[i].glutenRef = n}
+                            label="Gluten Free"
+                            defaultChecked={attendee.diet['gluten free']}
+                        />
+                        <Checkbox
+                            onCheck={e =>
+                                this.setState({ [attendee.name.toString()]: e.target.checked })}
+                            label="Other"
+                            defaultChecked={attendee.diet.other !== ''}
+                        />
+                        <div className={!this.state[attendee.name] ? 'hidden' : ''}>
+                            <TextField
+                                fullWidth
+                                ref={n => this.attendees[i].otherRef = n}
+                                floatingLabelText="Extra Dietary Needs"
+                                multiLine
+                                defaultValue={attendee.diet.other}
+                            />
+                        </div>
+                      </div>
+                    </div>;
+                  })
+              }
+              </div>
             </Dialog>
         );
-    }
+  }
 }
