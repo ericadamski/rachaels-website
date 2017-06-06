@@ -14,7 +14,7 @@ entryPaths = entryPaths.concat([
 module.exports = {
     entry: entryPaths,
     devServer: {
-        port: 80,
+        port: 8080,
         host: 'localhost',
         historyApiFallback: true,
     },
