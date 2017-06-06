@@ -11,12 +11,13 @@
   background: #A7A7B1;
   width: 100vw;
   padding: 0 25px;
-  min-height: 80px; }
+  min-height: 50px; }
   @media (min-width: 375px) {
     .header {
-      height: 50px;
+      height: 30px;
       flex-direction: row; } }
   .header .title {
+    color: #F9F9F9;
     justify-content: flex-start; }
     .header .title h3 {
       padding: 0; }

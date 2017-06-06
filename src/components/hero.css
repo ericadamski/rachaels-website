@@ -2,23 +2,36 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
   width: 100vw;
+  box-sizing: border-box;
   padding: 50px;
-  min-height: 50vh;
+  min-height: 75vh;
   z-index: 1;
-  font-size: 1rem; }
+  font-size: 1rem;
+  color: #F9F9F9; }
   .hero__text {
-    text-align: center; }
+    align-self: center;
+    font-weight: 400;
+    font-size: 1.25rem;
+    color: #f7e57d;
+    text-align: center;
+    padding: 15px;
+    min-height: 75vh; }
   .hero__married {
     font-size: 1.5em;
     text-transform: uppercase; }
   .hero__background {
     position: absolute;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     top: 0;
     left: 0;
     background: #FBE35C;
+    background-image: url(../images/R&M-114.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+    filter: grayscale(0.35);
     z-index: -1; }
