@@ -1,0 +1,24 @@
+.information {
+  width: 100vw;
+  padding: 25px 0;
+  text-align: center; }
+  .information__center {
+    box-sizing: border-box;
+    padding: 25px;
+    margin: 25px;
+    font-size: 1.5rem; }
+  .information__map {
+    position: relative;
+    width: 100vw;
+    min-height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; }
+    @media (min-width: 700px) {
+      .information__map {
+        width: 75vw; } }
+    .information__map iframe {
+      margin: 0 auto;
+      width: inherit;
+      min-height: 500px; }

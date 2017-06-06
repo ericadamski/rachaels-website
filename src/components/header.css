@@ -1,0 +1,33 @@
+.header {
+  z-index: 9999999;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #A7A7B1;
+  width: 100vw;
+  padding: 0 25px;
+  min-height: 80px; }
+  @media (min-width: 375px) {
+    .header {
+      height: 50px;
+      flex-direction: row; } }
+  .header .title {
+    justify-content: flex-start; }
+    .header .title h3 {
+      padding: 0; }
+
+.links {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center; }
+  @media (min-width: 375px) {
+    .links {
+      flex-direction: row; } }
+  .links a {
+    text-transform: uppercase; }
