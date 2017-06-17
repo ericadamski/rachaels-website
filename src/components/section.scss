@@ -1,0 +1,45 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // text-align: center;
+    padding: 25px;
+
+    &__title {
+        position: relative;
+        font-size: 3em;
+
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: -50%;
+            width: 200%;
+            height: 1px;
+            background: black;
+        }
+    }
+
+    &__content {
+        font-family: Roboto, sans-serif;
+        font-weight: 500;
+        line-height: 1.5rem;
+        font-size: 1.25em;
+
+        a {
+            color: #A5C2D0;
+            text-decoration: underline;
+
+            &:focus,
+            &:active {
+                color: shade(#A5C2D0, 75%);
+            }
+        }
+
+        dt, dd, li {
+            padding: 0.5rem;
+        }
+    }
+}

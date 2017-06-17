@@ -10,6 +10,19 @@
   @media (min-width: 375px) {
     .page {
       margin-top: 50px; } }
+  .page__image--full-width {
+    position: relative;
+    width: 100vw;
+    height: 500px; }
+    @media (min-width: 375px) {
+      .page__image--full-width {
+        height: 750px; } }
+  .page__section-1 {
+    background: url("./images/R&M-97.jpg");
+    background-size: cover; }
+  .page__section-2 {
+    background: url("./images/R&M-94.jpg");
+    background-size: cover; }
 
 .auth__form {
   display: flex;

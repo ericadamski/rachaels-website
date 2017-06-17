@@ -11,6 +11,27 @@
     @media (min-width: 375px) {
         margin-top: 50px;
     }
+
+    &__image--full-width {
+        position: relative;
+        width: 100vw;
+        height: 500px;
+
+        @media (min-width: 375px) {
+            height: 750px;
+        }
+    }
+
+
+    &__section-1 {
+        background: url('./images/R&M-97.jpg');
+        background-size: cover;
+    }
+
+    &__section-2 {
+        background: url('./images/R&M-94.jpg');
+        background-size: cover;
+    }
 }
 
 .auth__form {
